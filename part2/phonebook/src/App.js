@@ -1,32 +1,21 @@
 import './App.css';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import phonebookService from './services/phonebook';
+import axios from 'axios';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '040-1234567',
-      id: 1
-    },
-    {
-      name: 'Ada Lovelace',
-      number: '39-44-5323523',
-      id: 2
-    },
-    {
-      name: 'Dan Abramov',
-      number: '12-43-234345',
-      id: 3
-    },
-    {
-      name: 'Mary Poppendieck',
-      number: '39-23-6423122',
-      id: 4
-    }
-  ])
+  const [persons, setPersons] = useState([])
+  useEffect(() => {
+    phonebookService
+      .getAll()
+      .then(initialPhonebook => {
+        setPersons(initialPhonebook)
+      })
+  }, [])
+
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -35,51 +24,40 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const areTheseObjectsEqual = (first, second) => {
-    if (first === null || first === undefined || second === null || second === undefined) {
-      return first === second
-    }
-    if (first.constructor !== second.constructor) {
-      return false
-    }
-    if (first instanceof Function || first instanceof RegExp) {
-      return first === second
-    }
-    if (first === second || first.valueOf() === second.valueOf()) {
-      return true
-    }
-    if (first instanceof Date) {
-      return false
-    }
-    if (Array.isArray(first) && first.length !== second.length) {
-      return false
-    }
-    if (!(first instanceof Object) || !(second instanceof Object)) {
-      return false
-    }
-    const firstKeys = Object.keys(first)
-    const allKeysExist = Object.keys(second).every(i => firstKeys.indexOf(i) !== -1)
-    const allKeyValueMatch = firstKeys.every(i => areTheseObjectsEqual(first[i], second[i]))
-    return allKeysExist && allKeyValueMatch
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault()
-    const objectPerson = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1
-    }
-    let flag = true
+    let id = -1
     persons.forEach((person) => {
-      if (areTheseObjectsEqual(person.name, objectPerson.name)) {
-        flag = false
+      if (person.name === newName) {
+        id = person.id
       }
     })
-    if (flag) {
-      setPersons(persons.concat(objectPerson))
+    if (id === -1) {
+      const objectPerson = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1
+      }
+      phonebookService
+        .create(objectPerson)
+        .then(returnPerson => {
+          setPersons(persons.concat(returnPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     } else {
-      alert(`${newName} is already added to phonebook`)
+      const objectPerson = {
+        name: newName,
+        number: newNumber,
+        id: id
+      }
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        phonebookService
+          .update(objectPerson)
+          .then(returnPerson => {
+            setPersons(persons.map(person => person.id !== objectPerson.id ? person : returnPerson))
+          })
+      }
     }
   }
 
@@ -91,6 +69,18 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleClick = (id, name) => {
+    if (window.confirm(`delete ${name}`)) {
+      phonebookService
+        .deletePerson(id)
+        .then((status) => {
+          if (status === 200) {
+            setPersons(persons.filter(person => person.id !== id))
+          }
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -98,7 +88,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm onSubmit={handleSubmit} nameValue={newName} onChangeName={handleNameChange} numberValue={newNumber} onChangeNumber={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} onClick={handleClick} />
     </div>
   )
 }

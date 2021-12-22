@@ -1,13 +1,13 @@
 import Person from "./Person"
 
-const Persons = (props) => {
+const Persons = ({ persons, filter,onClick }) => {
     return (
-        props.persons.map((person) => {
+        persons.map((person) => {
             return (
-                props.filter === ''
-                    ? <Person key={person.id} person={person} />
-                    : person.name.toLowerCase().indexOf(props.filter.toLowerCase()) !== -1 &&
-                    <Person key={person.id} person={person} />
+                filter === ''
+                    ? <Person key={person.id} person={person} onClick={onClick} />
+                    : person.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1 &&
+                    <Person key={person.id} person={person} onClick={onClick} />
             )
         })
     )
