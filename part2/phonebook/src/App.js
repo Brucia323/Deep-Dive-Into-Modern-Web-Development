@@ -4,7 +4,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import phonebookService from './services/phonebook';
-import axios from 'axios';
+import Message from './components/Message';
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -19,6 +19,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
@@ -42,6 +44,10 @@ const App = () => {
         .create(objectPerson)
         .then(returnPerson => {
           setPersons(persons.concat(returnPerson))
+          setSuccessMessage(`Added ${returnPerson.name}`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000);
           setNewName('')
           setNewNumber('')
         })
@@ -56,6 +62,12 @@ const App = () => {
           .update(objectPerson)
           .then(returnPerson => {
             setPersons(persons.map(person => person.id !== objectPerson.id ? person : returnPerson))
+          })
+          .catch(error => {
+            setErrorMessage(`Information of ${objectPerson.name} has already been removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000);
           })
       }
     }
@@ -84,6 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message successMessage={successMessage} errorMessage={errorMessage} />
       <Filter value={filter} onChange={handleFilterChange} />
       <h2>Add a new</h2>
       <PersonForm onSubmit={handleSubmit} nameValue={newName} onChangeName={handleNameChange} numberValue={newNumber} onChangeNumber={handleNumberChange} />
