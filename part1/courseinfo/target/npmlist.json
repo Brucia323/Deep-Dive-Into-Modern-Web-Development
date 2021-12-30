@@ -1,1 +1,0 @@
-{"version":"0.1.0","name":"part1","dependencies":{"@testing-library/jest-dom":{"version":"5.16.1"},"@testing-library/react":{"version":"12.1.2"},"@testing-library/user-event":{"version":"13.5.0"},"react-dom":{"version":"17.0.2"},"react-scripts":{"version":"5.0.0"},"react":{"version":"17.0.2"},"web-vitals":{"version":"2.1.2"}}}
