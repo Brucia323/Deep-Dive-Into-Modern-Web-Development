@@ -1,12 +1,13 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const url = 'mongodb://localhost:27017/phonebook?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false'
+const url =
+  'mongodb://localhost:27017/phonebook?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false'
 
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+  name: String,
+  number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -26,8 +27,8 @@ const Person = mongoose.model('Person', personSchema)
 // })
 
 Person.find({}).then(persons => {
-    persons.forEach(person => {
-        console.log(person);
-    })
-    mongoose.connection.close()
+  persons.forEach(person => {
+    console.log(person)
+  })
+  mongoose.connection.close()
 })

@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'
 import { useState } from 'react'
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
     'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients',
   ]
 
   const [selected, setSelected] = useState(0)
@@ -24,7 +24,7 @@ const App = () => {
     const copy = [...points]
     copy[selected] += 1
     setPoints(copy)
-    if (copy[selected]>copy[most]) {
+    if (copy[selected] > copy[most]) {
       setMost(selected)
     }
   }
@@ -32,15 +32,19 @@ const App = () => {
   return (
     <div>
       <h1>Anecdote of the day</h1>
-      {anecdotes[selected]}<br />
-      has {points[selected]} votes<br />
+      {anecdotes[selected]}
+      <br />
+      has {points[selected]} votes
+      <br />
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleClick}>next anecdote</button>
       <h1>Anecdote with most votes</h1>
-      {anecdotes[most]}<br />
-      has {points[most]} votes<br/>
+      {anecdotes[most]}
+      <br />
+      has {points[most]} votes
+      <br />
     </div>
   )
 }
 
-export default App;
+export default App
