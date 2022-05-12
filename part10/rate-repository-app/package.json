@@ -1,0 +1,60 @@
+{
+  "name": "rate-repository-app",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-router-native)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "@expo/metro-config": "^0.3.16",
+    "@react-native-async-storage/async-storage": "~1.15.0",
+    "date-fns": "^2.28.0",
+    "dotenv": "^16.0.0",
+    "expo": "~44.0.0",
+    "expo-status-bar": "~1.2.0",
+    "formik": "^2.2.9",
+    "graphql": "^16.4.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
+    "react-native-paper": "^4.12.1",
+    "react-native-web": "0.17.1",
+    "react-router-native": "^6.3.0",
+    "use-debounce": "^7.0.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/eslint-parser": "^7.17.0",
+    "@testing-library/jest-native": "^4.0.4",
+    "@testing-library/react-native": "^9.1.0",
+    "@types/react-native": "^0.67.6",
+    "eslint": "^8.14.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-native": "^4.0.0",
+    "jest": "^27.5.1",
+    "jest-expo": "^44.0.1",
+    "react-test-renderer": "^17.0.1"
+  },
+  "private": true
+}
